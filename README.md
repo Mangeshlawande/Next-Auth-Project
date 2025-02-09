@@ -1,39 +1,3 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 ----------------------------------------------------
 npm i axios bcryptjs jsonwebtoken nodemailer react-hot-toast mongoose
@@ -422,3 +386,140 @@ This walkthrough provides a solid foundation for building user authentication in
 
 3 part of app :: 
  user/browser <==> api <==> db
+
+## 139. Middleware in nextjs
+
+In this video, the developer addresses several issues in a Next.js app, particularly focusing on user authentication, route protection, and logout functionality. Here’s a summary of the key points covered:
+
+1. **Protecting Pages:** Some pages are not protected and need middleware to restrict unauthorized access. The middleware in Next.js runs before a request is completed and can be used to either allow or block certain actions based on the user's authorization.
+
+2. **Logout Functionality:** The developer creates a logout API route (`/api/users/logout`) to handle user logouts. The backend will clear the token from cookies to log out the user. The client-side logic involves making a `GET` request to the logout route, clearing the token, and redirecting the user to the login page.
+
+3. **Frontend Integration:** In the profile page, a "Logout" button is added that triggers the logout functionality via an `onClick` event handler. The handler makes a request to the backend API to clear the token and redirects the user to the login page using `useRouter` from Next.js.
+
+4. **Middleware:** A middleware is introduced to handle route protection. Middleware runs before a request is completed, which allows checking if a user is authorized before they can access certain pages. For example, the profile page should be protected, while login and signup pages should be accessible to anyone. The middleware uses the request object to access the URL path and check if the user has a valid token. Based on the path and token status, the user can either be redirected or granted access.
+
+5. **Example of Matching Routes:** The middleware checks specific routes (`/login`, `/signup`, `/profile`) and uses the `cookies.get()` method to extract the user token. If the user is already authenticated, they are redirected away from the login or signup page. If a non-authenticated user tries to access a protected page like `/profile`, they will be redirected to the login page.
+
+Overall, the tutorial emphasizes the importance of understanding and implementing middleware for route protection in Next.js, along with the basics of managing user authentication and logout functionality.
+
+It looks like you're walking through a process where you're handling JWT (JSON Web Tokens) for authentication in a Next.js application. You’ve set up a middleware to protect certain routes (like the profile page) based on whether a valid token exists or not, and now you're moving forward to extract and use data from the JWT token.
+
+Here’s a summary of the key steps you've taken so far:
+
+### 1. **Setting Up Authentication Logic:**
+   - **Middleware:** You're using middleware to ensure that certain routes (like `/profile`) are protected. If no valid token is found, the user is redirected to the login page.
+   - **Redirection:** You've configured redirection so that users cannot access restricted routes without logging in.
+   - **Profile Access:** The middleware prevents unauthorized users from accessing certain pages, but you also tested edge cases where logged-in users can still access restricted routes like `/profile`.
+
+### 2. **Extracting Data from the JWT Token:**
+   - **JWT Creation:** When users log in, a JWT token is generated, which contains user data like `id`, `username`, and `email`.
+   - **Helper Method:** You've created a helper function (`getDataFromToken`) that extracts and decodes the JWT. This function uses the `jwt.verify()` method to extract the token's payload.
+   - **Token Validation:** The function checks if the token is present, decodes it, and then returns the decoded data, specifically the user’s `id`.
+
+### 3. **Building an API Endpoint to Retrieve User Data:**
+   - **API Route:** You’re setting up an API route (`/api/me`) to fetch user data using the token stored in cookies. This route verifies the token, extracts the user ID, and queries the database to fetch the corresponding user.
+   - **Database Query:** You use a model to query the database for the user by their `id` and return the corresponding user details.
+
+### 4. **Error Handling:**
+   - **Try-Catch Block:** In your API route and helper function, you’ve added a try-catch block to handle errors, such as invalid or expired tokens. If there's an error, an appropriate response is returned.
+
+### 5. **Database Integration:**
+   - **Connecting to the Database:** You've connected to the database to retrieve the user's data once the token is validated.
+   - **User Model Query:** Using the user’s `id` obtained from the decoded token, you query the database to fetch the user’s full data.
+
+### What’s Happening Next:
+You’re planning to complete the setup and make sure that the data fetched from the token is being properly used in your application. You’ll then ensure that the endpoint (`/api/me`) works correctly and returns the user data based on the JWT information.
+
+### Areas to Keep in Mind:
+- **Security:** Ensure that the JWT secret used for signing the token is kept secure in your environment variables.
+- **Error Handling:** Be mindful of potential issues with token expiration, invalid tokens, and other edge cases.
+- **Testing:** After setting everything up, thorough testing of your authentication flow is important to ensure everything works as expected.
+
+In the video, the speaker walked through a process of implementing user authentication, middleware for protecting routes, and extracting user data from a token in a web application. Here's a summary of the key points:
+
+1. **Route Protection with Middleware**:
+   - The speaker demonstrates how to implement middleware that ensures protected routes like the "profile" page are only accessible if the user is authenticated.
+   - If there’s no valid token, the user is redirected to the login page.
+
+2. **Token Extraction**:
+   - The process of extracting and decoding user data from the JWT token is explained, including creating a helper function (`get data from token`) to handle token decoding using JWT.
+   - This function extracts user data such as ID, username, and email from the token, which is then used in the application.
+
+3. **User Information API**:
+   - A new API route is created for the "me" endpoint to retrieve and return the user's data after extracting it from the token.
+   - The database query is optimized to exclude sensitive information like the password and "isAdmin" field when fetching the user data.
+
+4. **Frontend Interaction**:
+   - The speaker shows how to interact with the API using Axios to fetch user data when the user clicks a button. The fetched data is then displayed on the profile page.
+   - A button triggers the `get user details` method, which fetches the data and displays it in the UI.
+
+5. **User Interface Update**:
+   - The fetched user data is displayed in a simple format, with conditional rendering showing a message like "user found" and displaying the username and email.
+
+6. **Enhancements & Future Actions**:
+   - The speaker plans to further improve the application by integrating email functionality using services like MailTrap.
+   - There’s also a focus on updating the database with token-related data (e.g., sending the token to the user's email).
+
+7. **GitHub Repository**:
+   - The speaker commits the changes to GitHub and mentions that the repository is available for reference.
+
+The action plan moving forward includes:
+- Sending emails via MailTrap.
+- Storing the token in the database and sending it to the user's email.
+
+This video serves as a solid starting point for building a more secure authentication system, handling token-based user authentication, and extracting and managing user data effectively.
+
+
+[
+   Here’s a summary of the video in key points:
+
+1. **Protecting Pages with Middleware**:
+   - Implemented middleware to restrict access to protected pages (e.g., profile page).
+   - If the user is not authenticated (no valid token), they are redirected to the login page.
+
+2. **Logout Functionality**:
+   - Created a logout API route (`/api/users/logout`) to clear the user's token from cookies.
+   - Client-side logic for logout involves sending a `GET` request to the logout route, clearing the token, and redirecting the user to the login page.
+
+3. **Frontend Integration for Logout**:
+   - Added a "Logout" button in the profile page that triggers the logout functionality via an `onClick` event.
+   - Used `useRouter` from Next.js to redirect the user to the login page after logout.
+
+4. **Middleware for Route Protection**:
+   - Middleware checks if a user is authenticated before granting access to protected routes.
+   - Redirects non-authenticated users from protected pages like `/profile` to the login page.
+   - For pages like `/login` and `/signup`, unauthenticated users can still access them.
+
+5. **JWT Token Handling**:
+   - Implemented logic to extract data from JWT (user's `id`, `username`, and `email`).
+   - Created a helper function (`getDataFromToken`) to decode and validate the JWT token.
+
+6. **API Route to Retrieve User Data**:
+   - Created an API route (`/api/me`) that uses the decoded JWT to fetch user data from the database.
+   - Validates the token, extracts the user `id`, and queries the database to return the corresponding user information.
+
+7. **Error Handling**:
+   - Used a `try-catch` block to handle errors related to invalid or expired tokens.
+   - Appropriate error responses are returned when an issue occurs with token validation or user retrieval.
+
+8. **Database Integration**:
+   - Connected to the database to fetch user details using the user `id` extracted from the JWT token.
+   - The query excludes sensitive information such as the password and `isAdmin` field when retrieving user data.
+
+9. **Frontend Display of User Data**:
+   - Used Axios to make a request to the backend and display user data on the profile page.
+   - Conditional rendering is applied to show either "user found" with user details or a message indicating no data.
+
+10. **Future Enhancements**:
+    - Plans to integrate email functionality using MailTrap to send tokens to the user’s email.
+    - Focus on securely storing the token in the database and sending it to the user’s email for further actions.
+
+11. **GitHub Repository**:
+    - Commits were pushed to GitHub, with the project repository available for reference.
+
+12. **Action Plan**:
+    - The next steps include sending emails through MailTrap and updating the database with token-related data.
+
+This tutorial provides a comprehensive approach to handling user authentication, protecting routes, and managing JWT tokens in a Next.js application.
+]
