@@ -47,9 +47,11 @@ export default function SignupPage(){
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen py-2">
-        <h1 className="text-center p-4 text-3xl bg-purple-500 rounded font-extralight mb-8 w-80"> {loading? "Processing" : "Signup Page" } </h1>
-        <hr />
-        <label htmlFor="username">Username</label>
+      
+       <div className="flex flex-col bg-slate-800 p-6 rounded text-center items-center">
+       <h1 className="text-center p-4 text-3xl bg-purple-500 rounded font-extralight mb-8 w-80"> {loading? "Processing" : "Signup Page" } </h1>
+       <hr />
+         <label htmlFor="username">Username</label>
         <input 
         className="p-2 rounded-lg mb-4 border border-gray-600 focus:outline-none focus:border-gray-600 text-gray-800"
         id="username"
@@ -58,13 +60,13 @@ export default function SignupPage(){
         type="text"
         placeholder="Enter username"
          />
-
+        
         <label htmlFor="email">Email</label>
         <input 
         className="p-2 rounded-lg mb-4 border border-gray-600 focus:outline-none focus:border-gray-600 text-gray-800"
         id="email"
         value={user.email}
-        onChange={(e) => setUser({...user, email:e.target.value})}
+        onChange={(e) => setUser({...user, email: e.target.value})}
         type="email"
         placeholder="Enter email"
         />
@@ -72,17 +74,19 @@ export default function SignupPage(){
         <label htmlFor="password">Password</label>
         <input 
         className="p-2 rounded-lg mb-4 border border-gray-600 focus:outline-none focus:border-gray-600 text-gray-800"
-        id="password"
         value={user.password}
-        onChange={(e) => setUser({...user, password:e.target.value})}
+        onChange={(e) => setUser({...user, password: e.target.value})}
         type="password"
         placeholder=" Enter password"
         />
 
         <button 
+        
         onClick={onSignup}
         className="p-2 border border-gray-300 focus:outline-none rounded-lg mb-4 focus:border-gray-600"> {buttonDisabled ? "No Signup" : "Signup Here"}</button>
-        <Link href='/login'> Visit Login Page </Link>
+        <Link href='/login' className="bg-gray-700 p-3 rounded-lg"> Visit Login Page </Link>
+
+        </div>
     </div>
     )
 }

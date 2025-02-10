@@ -28,6 +28,9 @@ export default function ProfilePage() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen py-2">
+
+<div className="flex flex-col bg-slate-800 p-6 rounded text-center items-center">
+
             <h1 className="text-center p-4 text-3xl bg-purple-500 rounded font-extralight mb-8 w-80">Profile</h1>
             <hr />
             <p>Profile page</p>
@@ -44,7 +47,7 @@ export default function ProfilePage() {
         className="bg-green-800 mt-4 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >GetUser Details</button>
 
-
+                </div>
             </div>
     )
 }
