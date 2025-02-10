@@ -12,13 +12,24 @@ export default function ResetPassword() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [token, setToken] = useState<string | null>('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     const urlToken = window.location.search.split("=")[1];
-
+    console.log(urlToken);
+    
     setToken(urlToken || "");
   }, []);
+
+  useEffect(() => {
+    if(password !== confirmPassword){
+      setError(true)
+    }else{
+      setError(false);
+    }
+  }, [password, confirmPassword]);
+
 
   const onSubmit = async () => {
     if (password !== confirmPassword) {
@@ -42,7 +53,7 @@ export default function ResetPassword() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
-
+      <h1 className="text-3xl "> {error ? "Password Not Match" : "" }</h1>
       <div className="flex flex-col bg-slate-800 p-6 rounded text-center items-center">
         <h1 className="text-center p-4 text-3xl bg-purple-500 rounded font-extralight mb-8 w-80">{loading ? "Processing" : "Reset Password"}</h1>
         <hr />
