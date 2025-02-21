@@ -28,7 +28,5 @@ export const config = {
     '/login',
     '/signup',
     '/verifyemail',
-    '/forgot-password',
-    '/reset-password',
   ]
 }

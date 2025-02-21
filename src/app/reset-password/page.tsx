@@ -50,7 +50,7 @@ export default function ResetPassword() {
       setLoading(false);
     }
   };
-
+  
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <h1 className="text-3xl "> {error ? "Password Not Match" : "" }</h1>
