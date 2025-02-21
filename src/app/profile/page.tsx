@@ -8,7 +8,10 @@ import {useRouter} from "next/navigation";
 
 export default function ProfilePage() {
     const router = useRouter()
-    const [data, setData] = useState("nothing")
+    const [data, setData] = useState("Nothing")
+    const [user, setUser] = useState()
+    const [email, setEmail] = useState()
+
     const logout = async () => {
         try {
             await axios.get('/api/users/logout')
@@ -23,6 +26,11 @@ export default function ProfilePage() {
     const getUserDetails = async () => {
         const res = await axios.get('/api/users/me')
         console.log(res.data);
+        console.log(res.data.data.username);
+        console.log(res.data.data._id);
+        console.log(res.data.data.email);
+        setUser(res.data.data.username);
+        setEmail(res.data.data.email)
         setData(res.data.data._id)
     }
 
@@ -34,8 +42,11 @@ export default function ProfilePage() {
             <h1 className="text-center p-4 text-3xl bg-purple-500 rounded font-extralight mb-8 w-80">Profile</h1>
             <hr />
             <p>Profile page</p>
-            <h2 className="p-1 rounded bg-green-500 my-3">{data === 'nothing' ? "Nothing" : <Link href={`/profile/${data}`}>{data}
+            <h2 className="p-1 rounded bg-green-500 my-3"> Id :: {data === 'nothing' ? "Nothing" : <Link href={`/profile/${data}`}>{data}
             </Link>}</h2>
+            <hr />
+            <h2>Email :{email}</h2>
+            <h2>Name :{user}</h2>
         <hr />
         <button
         onClick={logout}
